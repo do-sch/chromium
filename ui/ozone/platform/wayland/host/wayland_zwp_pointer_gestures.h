@@ -68,9 +68,23 @@ class WaylandZwpPointerGestures
       uint32_t serial,
       uint32_t time,
       int32_t cancelled);
+  static void OnHoldBegin(
+      void* data,
+      struct zwp_pointer_gesture_hold_v1* zwp_pointer_gesture_hold_v1,
+      uint32_t serial,
+      uint32_t time,
+      struct wl_surface* surface,
+      uint32_t fingers);
+  static void OnHoldEnd(
+      void* data,
+      struct zwp_pointer_gesture_hold_v1* zwp_pointer_gesture_hold_v1,
+      uint32_t serial,
+      uint32_t time,
+      int32_t cancelled);
 
   wl::Object<zwp_pointer_gestures_v1> obj_;
   wl::Object<zwp_pointer_gesture_pinch_v1> pinch_;
+  wl::Object<zwp_pointer_gesture_hold_v1> hold_;
   double current_scale_ = 1;
   const raw_ptr<WaylandConnection> connection_;
   const raw_ptr<Delegate> delegate_;
@@ -90,6 +104,11 @@ class WaylandZwpPointerGestures::Delegate {
       base::TimeTicks timestamp,
       int device_id,
       absl::optional<float> scale_delta = absl::nullopt) = 0;
+
+  virtual void OnHoldEvent(EventType event_type,
+                           uint32_t finger_count,
+                           base::TimeTicks timestamp,
+                           int device_id) = 0;
 };
 
 }  // namespace ui

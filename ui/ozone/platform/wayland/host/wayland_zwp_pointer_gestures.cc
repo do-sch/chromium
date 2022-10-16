@@ -21,7 +21,7 @@
 namespace ui {
 
 namespace {
-constexpr uint32_t kMinVersion = 1;
+constexpr uint32_t kMinVersion = 3;
 }
 
 // static
@@ -79,6 +79,16 @@ void WaylandZwpPointerGestures::Init() {
       };
   zwp_pointer_gesture_pinch_v1_add_listener(
       pinch_.get(), &zwp_pointer_gesture_pinch_v1_listener, this);
+
+  hold_.reset(zwp_pointer_gestures_v1_get_hold_gesture(
+      obj_.get(), connection_->seat()->pointer()->wl_object()));
+
+  static constexpr zwp_pointer_gesture_hold_v1_listener
+      zwp_pointer_gesture_hold_v1_listener = {
+          &WaylandZwpPointerGestures::OnHoldBegin,
+          &WaylandZwpPointerGestures::OnHoldEnd};
+  zwp_pointer_gesture_hold_v1_add_listener(
+      hold_.get(), &zwp_pointer_gesture_hold_v1_listener, this);
 }
 
 // static
@@ -149,6 +159,36 @@ void WaylandZwpPointerGestures::OnPinchEnd(
   self->delegate_->OnPinchEvent(ET_GESTURE_PINCH_END,
                                 gfx::Vector2dF() /*delta*/, timestamp,
                                 self->obj_.id());
+}
+
+void WaylandZwpPointerGestures::OnHoldBegin(
+    void* data,
+    struct zwp_pointer_gesture_hold_v1* zwp_pointer_gesture_hold_v1,
+    uint32_t serial,
+    uint32_t time,
+    struct wl_surface* surface,
+    uint32_t fingers) {
+  auto* self = static_cast<WaylandZwpPointerGestures*>(data);
+
+  base::TimeTicks timestamp = base::TimeTicks() + base::Milliseconds(time);
+
+  self->delegate_->OnHoldEvent(ET_TOUCH_PRESSED, fingers, timestamp,
+                               self->obj_.id());
+}
+
+void WaylandZwpPointerGestures::OnHoldEnd(
+    void* data,
+    struct zwp_pointer_gesture_hold_v1* zwp_pointer_gesture_hold_v1,
+    uint32_t serial,
+    uint32_t time,
+    int32_t cancelled) {
+  auto* self = static_cast<WaylandZwpPointerGestures*>(data);
+
+  base::TimeTicks timestamp = base::TimeTicks() + base::Milliseconds(time);
+
+  self->delegate_->OnHoldEvent(
+      cancelled ? ET_TOUCH_CANCELLED : ET_TOUCH_RELEASED, 0, timestamp,
+      self->obj_.id());
 }
 
 }  // namespace ui
