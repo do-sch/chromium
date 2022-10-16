@@ -238,4 +238,72 @@ TEST(XEventTranslationTest, KeyModifiersCounterpartRepeat) {
   EXPECT_EQ(ET_KEY_RELEASED, keyev_shift_r_released->type());
 }
 
+// Verifies that scroll events remain ET_SCROLL type or are translated to
+// ET_SCROLL_FLING_START depending on their X and Y offsets.
+TEST(XEventTranslationTest, ScrollEventType) {
+  int device_id = 1;
+  ui::SetUpTouchPadForTest(device_id);
+
+  {
+    // Ordinary horizontal scrolling remains ET_SCROLL.
+    ui::ScopedXI2Event xev;
+    xev.InitScrollEvent(device_id, 1, 0, 1, 0, 2);
+
+    const auto event = BuildEventFromXEvent(*xev);
+    EXPECT_TRUE(event);
+    EXPECT_EQ(event->type(), EventType::ET_SCROLL);
+
+    const ScrollEvent* scroll_event = static_cast<ScrollEvent*>(event.get());
+    EXPECT_EQ(scroll_event->x_offset(), 1);
+    EXPECT_EQ(scroll_event->y_offset(), 0);
+    EXPECT_EQ(scroll_event->x_offset_ordinal(), 1);
+    EXPECT_EQ(scroll_event->y_offset_ordinal(), 0);
+  }
+  {
+    // Ordinary vertical scrolling remains ET_SCROLL.
+    ui::ScopedXI2Event xev;
+    xev.InitScrollEvent(device_id, 0, 10, 0, 10, 2);
+
+    const auto event = BuildEventFromXEvent(*xev);
+    EXPECT_TRUE(event);
+    EXPECT_EQ(event->type(), EventType::ET_SCROLL);
+
+    const ScrollEvent* scroll_event = static_cast<ScrollEvent*>(event.get());
+    EXPECT_EQ(scroll_event->x_offset(), 0);
+    EXPECT_EQ(scroll_event->y_offset(), 10);
+    EXPECT_EQ(scroll_event->x_offset_ordinal(), 0);
+    EXPECT_EQ(scroll_event->y_offset_ordinal(), 10);
+  }
+  {
+    // Ordinary diagonal scrolling remains ET_SCROLL.
+    ui::ScopedXI2Event xev;
+    xev.InitScrollEvent(device_id, 47, -11, 47, -11, 2);
+
+    const auto event = BuildEventFromXEvent(*xev);
+    EXPECT_TRUE(event);
+    EXPECT_EQ(event->type(), EventType::ET_SCROLL);
+
+    const ScrollEvent* scroll_event = static_cast<ScrollEvent*>(event.get());
+    EXPECT_EQ(scroll_event->x_offset(), 47);
+    EXPECT_EQ(scroll_event->y_offset(), -11);
+    EXPECT_EQ(scroll_event->x_offset_ordinal(), 47);
+    EXPECT_EQ(scroll_event->y_offset_ordinal(), -11);
+  }
+  {
+    // If x_offset and y_offset both are 0, expected event type is
+    // ET_SCROLL_FLING_START and not ET_SCROLL
+    ui::ScopedXI2Event xev;
+    xev.InitScrollEvent(device_id, 0, 0, 0, 0, 2);
+
+    const auto event = BuildEventFromXEvent(*xev);
+    EXPECT_TRUE(event);
+    EXPECT_EQ(event->type(), EventType::ET_SCROLL_FLING_START);
+
+    const ScrollEvent* scroll_event = static_cast<ScrollEvent*>(event.get());
+    EXPECT_EQ(scroll_event->x_offset(), 0);
+    EXPECT_EQ(scroll_event->y_offset(), 0);
+    EXPECT_EQ(scroll_event->x_offset_ordinal(), 0);
+    EXPECT_EQ(scroll_event->y_offset_ordinal(), 0);
+  }
+}
 }  // namespace ui
