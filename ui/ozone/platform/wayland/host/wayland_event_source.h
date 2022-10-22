@@ -238,6 +238,9 @@ class WaylandEventSource : public PlatformEventSource,
   // See ui/events/event_constants.h for examples and details.
   int keyboard_modifiers_ = 0;
 
+  // Scroll scale that is multiplied with scroll amount
+  float axis_scale_ = 1;
+
   // Last known pointer location.
   gfx::PointF pointer_location_;
 

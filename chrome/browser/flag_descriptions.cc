@@ -6471,6 +6471,25 @@ const char kOzonePlatformHintName[] = "Preferred Ozone platform";
 const char kOzonePlatformHintDescription[] =
     "Selects the preferred platform backend used on Linux. The default one is "
     "\"X11\". \"Auto\" selects Wayland if possible, X11 otherwise. ";
+
+const char kWaylandScrollSpeedMultiplier1[] = "Default";
+const char kWaylandScrollSpeedMultiplier1_2[] = "1.2";
+const char kWaylandScrollSpeedMultiplier1_4[] = "1.4";
+const char kWaylandScrollSpeedMultiplier1_6[] = "1.6";
+const char kWaylandScrollSpeedMultiplier1_8[] = "1.8";
+const char kWaylandScrollSpeedMultiplier2[] = "2.0";
+const char kWaylandScrollSpeedMultiplier2_5[] = "2.5";
+const char kWaylandScrollSpeedMultiplier3[] = "3.0";
+const char kWaylandScrollSpeedMultiplier3_5[] = "3.5";
+const char kWaylandScrollSpeedMultiplier4[] = "4.0";
+const char kWaylandScrollSpeedMultiplier5[] = "5.0";
+const char kWaylandScrollSpeedMultiplier6[] = "6.0";
+const char kWaylandScrollSpeedMultiplier8[] = "8.0";
+const char kWaylandScrollSpeedMultiplier10[] = "10.0";
+const char kWaylandScrollSpeedMultiplierName[] =
+    "Changes the scrolling speed in Wayland";
+const char kWaylandScrollSpeedMultiplierDescription[] =
+    "Sets a multiplier by which the scroll distance is multiplied.";
 #endif  // BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)

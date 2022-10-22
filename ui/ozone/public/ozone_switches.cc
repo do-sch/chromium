@@ -13,6 +13,9 @@ const char kOzonePlatform[] = "ozone-platform";
 // chrome://flags.  See https://crbug.com/1246928.
 const char kOzonePlatformHint[] = "ozone-platform-hint";
 
+// Scroll speed multiplier for Wayland.
+const char kWaylandScrollSpeedMultiplier[] = "wayland-scroll-speed-multiplier";
+
 // Specify location for image dumps.
 const char kOzoneDumpFile[] = "ozone-dump-file";
 

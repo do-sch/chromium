@@ -413,6 +413,36 @@ const FeatureEntry::Choice kOzonePlatformHintRuntimeChoices[] = {
      switches::kOzonePlatformHint, "wayland"},
 #endif
 };
+
+const FeatureEntry::Choice kWaylandScrollSpeedMultiplierChoices[] = {
+    {flag_descriptions::kWaylandScrollSpeedMultiplier1, "", ""},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier1_2,
+     switches::kWaylandScrollSpeedMultiplier, "1.2"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier1_4,
+     switches::kWaylandScrollSpeedMultiplier, "1.4"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier1_6,
+     switches::kWaylandScrollSpeedMultiplier, "1.6"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier1_8,
+     switches::kWaylandScrollSpeedMultiplier, "1.8"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier2,
+     switches::kWaylandScrollSpeedMultiplier, "2.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier2_5,
+     switches::kWaylandScrollSpeedMultiplier, "2.5"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier3,
+     switches::kWaylandScrollSpeedMultiplier, "3.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier3_5,
+     switches::kWaylandScrollSpeedMultiplier, "3.5"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier4,
+     switches::kWaylandScrollSpeedMultiplier, "4.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier5,
+     switches::kWaylandScrollSpeedMultiplier, "5.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier6,
+     switches::kWaylandScrollSpeedMultiplier, "6.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier8,
+     switches::kWaylandScrollSpeedMultiplier, "8.0"},
+    {flag_descriptions::kWaylandScrollSpeedMultiplier10,
+     switches::kWaylandScrollSpeedMultiplier, "10.0"},
+};
 #endif
 
 #if BUILDFLAG(ENABLE_VR)
@@ -4765,7 +4795,10 @@ const FeatureEntry kFeatureEntries[] = {
     {"ozone-platform-hint", flag_descriptions::kOzonePlatformHintName,
      flag_descriptions::kOzonePlatformHintDescription, kOsLinux,
      MULTI_VALUE_TYPE(kOzonePlatformHintRuntimeChoices)},
-
+    {"wayland-scroll-speed-multiplier",
+     flag_descriptions::kWaylandScrollSpeedMultiplierName,
+     flag_descriptions::kWaylandScrollSpeedMultiplierDescription, kOsLinux,
+     MULTI_VALUE_TYPE(kWaylandScrollSpeedMultiplierChoices)},
     {"force-password-initial-sync-when-decryption-fails",
      flag_descriptions::kForcePasswordInitialSyncWhenDecryptionFailsName,
      flag_descriptions::kForcePasswordInitialSyncWhenDecryptionFailsDescription,

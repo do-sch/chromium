@@ -8,6 +8,7 @@
 
 #include "base/bind.h"
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/containers/cxx20_erase.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
@@ -34,10 +35,23 @@
 #include "ui/ozone/platform/wayland/host/wayland_keyboard.h"
 #include "ui/ozone/platform/wayland/host/wayland_window.h"
 #include "ui/ozone/platform/wayland/host/wayland_window_manager.h"
+#include "ui/ozone/public/ozone_switches.h"
 
 namespace ui {
 
 namespace {
+
+float axisScaleFromCmdLineSwitch() {
+  const std::string multiplier =
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kWaylandScrollSpeedMultiplier);
+  double result = 1.0;
+
+  if (base::StringToDouble(multiplier, &result))
+    return result;
+
+  return 1;
+}
 
 bool HasAnyPointerButtonFlag(int flags) {
   return (flags & (EF_LEFT_MOUSE_BUTTON | EF_MIDDLE_MOUSE_BUTTON |
@@ -155,6 +169,10 @@ WaylandEventSource::WaylandEventSource(wl_display* display,
 
   // Observes remove changes to know when touch points can be removed.
   window_manager_->AddObserver(this);
+
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kWaylandScrollSpeedMultiplier))
+    axis_scale_ = axisScaleFromCmdLineSwitch();
 }
 
 WaylandEventSource::~WaylandEventSource() = default;
@@ -363,8 +381,8 @@ void WaylandEventSource::OnPointerMotionEvent(
 }
 
 void WaylandEventSource::OnPointerAxisEvent(const gfx::Vector2dF& offset) {
-  EnsurePointerScrollData().dx += offset.x();
-  EnsurePointerScrollData().dy += offset.y();
+  EnsurePointerScrollData().dx += offset.x() * axis_scale_;
+  EnsurePointerScrollData().dy += offset.y() * axis_scale_;
 }
 
 void WaylandEventSource::OnResetPointerFlags() {

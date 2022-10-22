@@ -3709,6 +3709,24 @@ extern const char kOzonePlatformHintChoiceWayland[];
 extern const char kOzonePlatformHintName[];
 extern const char kOzonePlatformHintDescription[];
 
+extern const char kWaylandScrollSpeedMultiplier1[];
+extern const char kWaylandScrollSpeedMultiplier1_2[];
+extern const char kWaylandScrollSpeedMultiplier1_4[];
+extern const char kWaylandScrollSpeedMultiplier1_6[];
+extern const char kWaylandScrollSpeedMultiplier1_8[];
+extern const char kWaylandScrollSpeedMultiplier2[];
+extern const char kWaylandScrollSpeedMultiplier2_5[];
+extern const char kWaylandScrollSpeedMultiplier3[];
+extern const char kWaylandScrollSpeedMultiplier3_5[];
+extern const char kWaylandScrollSpeedMultiplier4[];
+extern const char kWaylandScrollSpeedMultiplier5[];
+extern const char kWaylandScrollSpeedMultiplier6[];
+extern const char kWaylandScrollSpeedMultiplier8[];
+extern const char kWaylandScrollSpeedMultiplier10[];
+
+extern const char kWaylandScrollSpeedMultiplierName[];
+extern const char kWaylandScrollSpeedMultiplierDescription[];
+
 extern const char kForcePasswordInitialSyncWhenDecryptionFailsName[];
 extern const char kForcePasswordInitialSyncWhenDecryptionFailsDescription[];
 #endif  // BUILDFLAG(IS_LINUX)
